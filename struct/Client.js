@@ -1,4 +1,5 @@
-const { AkairoClient } = require('discord-akairo');
+const { AkairoClient, InhibitorHandler, ListenerHandler } = require('discord-akairo');
+const Handler = require('./Handler');
 const config = require('../config');
 
 class Client extends AkairoClient {
