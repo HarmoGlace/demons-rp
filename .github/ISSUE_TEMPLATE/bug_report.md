@@ -2,7 +2,7 @@
 name: Bug report
 about: Permet de signaler un bug
 title: "[BUG]"
-labels: ''
+labels: bug, waiting
 assignees: ''
 
 ---
