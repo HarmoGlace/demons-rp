@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "https://github.com/HarmoGlace/demons-rp",
   "author": "HarmoGlace <harmoglacehelp@gmail.com>",
-  "license": "w",
+  "license": "Apache-2.0",
   "dependencies": {
     "discord-akairo": "^8.0.0",
     "discord.js": "^12.2.0"
