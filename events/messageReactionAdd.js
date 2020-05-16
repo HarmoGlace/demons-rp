@@ -29,7 +29,7 @@ class Ready extends Listener {
 
             if (!user || !key) return;
 
-            const member = await msg.guild.members.fetch(key) || await client.users.fetch(key);
+            const member = await message.guild.members.fetch(key) || await client.users.fetch(key);
             const memberName = member?.displayName || member?.username || 'inconnu';
             const moderator = (await message.guild.members.fetch(user.id))?.displayName || (await client.users.fetch(user.id))?.username || 'inconnu';
 
