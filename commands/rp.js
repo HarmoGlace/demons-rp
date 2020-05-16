@@ -1,4 +1,4 @@
-const Command = require("../struct/Command");
+const Command = require('../struct/Command');
 
 class Rp extends Command {
     constructor() {
@@ -6,9 +6,9 @@ class Rp extends Command {
             aliases: ['rp'],
             args: [
                 {
-                    id: "all",
-                    type: "string",
-                    match: "separate"
+                    id: 'all',
+                    type: 'string',
+                    match: 'separate'
                 }
             ]
         })
@@ -23,29 +23,29 @@ class Rp extends Command {
         const defaultcolor = 0x3051e3;
         const sucess = 0x64eb34;
         const refused = 0xeb4034;
-        const stops = ["stop", "stopper", "cancel", "annuler"];
+        const stops = ['stop', 'stopper', 'cancel', 'annuler'];
         const rpverif = client.channels.cache.get(config.rpVerif);
 
         const commands = [
             {
-                id: "leave",
-                description: "Quitte le rp et déclare mort votre personnage"
+                id: 'leave',
+                description: 'Quitte le rp et déclare mort votre personnage'
             },
             {
-                id: "status",
+                id: 'status',
                 description: 'Permet de mettre à jour le status de votre personnage rp'
             },
             // { //                  IN WORK IN PROGRESS - MAY NOT FULLY WORK
-            //     id: "update",
-            //     description: "Permet de mettre à jour les informations de votre personnage rp"
+            //     id: 'update',
+            //     description: 'Permet de mettre à jour les informations de votre personnage rp'
             // },
             {
                 id: 'info',
-                description: "Permet d'avoir des informations sur un personnage rp"
+                description: 'Permet d\'avoir des informations sur un personnage rp'
             },
             // { //               TO AVOID INDEXING DO NOT UNCOMMENT THIS
             //     id: 'enter',
-            //     description: "Permet d'entrer dans le rp"
+            //     description: 'Permet d'entrer dans le rp'
             // }
         ]
 
@@ -53,23 +53,19 @@ class Rp extends Command {
         this.lemsg = msg
         this.defaultcolor = defaultcolor
 
-        if (!rpdb.has(msg.author.id) || rpdb.get(msg.author.id, "status") !== "accepted") {
+        if (!rpdb.has(msg.author.id) || rpdb.get(msg.author.id, 'status') !== 'accepted') {
 
-            if (rpdb.has(msg.author.id) && rpdb.get(msg.author.id, "status") === "waiting") return msg.channel.send(`${msg.author}, attend que ta demande soit traitée !`)
+            if (rpdb.has(msg.author.id) && rpdb.get(msg.author.id, 'status') === 'waiting') return msg.channel.send(`${msg.author}, attend que ta demande soit traitée !`)
 
-            if (!args || args[0].toLowerCase() !== "enter") return msg.channel.send(`${msg.author}, fais \`\`!rp enter\`\` pour envoyer une demande d'entrée au rp`)
+            if (!args || args[0].toLowerCase() !== 'enter') return msg.channel.send(`${msg.author}, fais \`\`!rp enter\`\` pour envoyer une demande d'entrée au rp`)
 
             const channel = msg.channel
 
             await msg.channel.send(`${msg.author},`, {
                 embed: {
                     color: defaultcolor,
-                    fields: [
-                        {
-                            name: `Entre dans le rp`,
-                            value: `Tout d'abord, je t'invite à envoyer ici le nom du personnage que tu souhaiterais avoir.\nNB : Le pseudo doit faire entre 4 et 32 caractères (inclus)`
-                        }
-                    ]
+                    title: 'Entre dans le rp',
+                    description: 'Tout d\'abord, je t\'invite à envoyer ici le nom du personnage que tu souhaiterais avoir.\nNB : Le pseudo doit faire entre 4 et 32 caractères (inclus)'
                 }
             })
 
@@ -88,12 +84,8 @@ class Rp extends Command {
                     msg.channel.send(`${msg.author}, tu as choisi ${pseudo} pour le rp.`, {
                         embed: {
                             color: defaultcolor,
-                            fields: [
-                                {
-                                    name: "Maintenant, tu vas devoir choisir un avatar",
-                                    value: "Pour cela, envoie ici l'image que tu souhaiterais avoir en tant qu'avatar"
-                                }
-                            ]
+                            title: 'Maintenant, tu vas devoir choisir un avatar',
+                            description: 'Pour cela, envoie ici l\'image que tu souhaiterais avoir en tant qu\'avatar'
                         }
                     })
 
@@ -118,12 +110,8 @@ class Rp extends Command {
                         channel.send(`${msg.author}, tu as définit ton avatar rp`, {
                             embed: {
                                 color: defaultcolor,
-                                fields: [
-                                    {
-                                        name: "Maintenant, envoie une description détaillée de ton personnage",
-                                        value: "Elle devra faire moins de 1000 caractères\nNB : voici l'avatar que tu as choisit"
-                                    }
-                                ],
+                                title: 'Maintenant, envoie une description détaillée de ton personnage',
+                                description: 'Elle devra faire moins de 1000 caractères\nNB : voici l\'avatar que tu as choisit',
                                 thumbnail: {
                                     url: url
                                 }
@@ -144,20 +132,20 @@ class Rp extends Command {
                             const awaitmsg = await channel.send({
                                 embed: {
                                     color: defaultcolor,
-                                    title: "Confirme l'envoi de ta demande pour participer au rp",
+                                    title: 'Confirme l\'envoi de ta demande pour participer au rp',
                                     fields: [
                                         {
-                                            name: "Nom de ton personnage",
+                                            name: 'Nom de ton personnage',
                                             value: pseudo,
                                             inline: true
                                         },
                                         {
-                                            name: "Description de ton personnage",
+                                            name: 'Description de ton personnage',
                                             value: description,
                                             inline: true
                                         },
                                         {
-                                            name: "Avatar de ton personnage",
+                                            name: 'Avatar de ton personnage',
                                             value: '\u200B'
                                         }
                                     ],
@@ -170,11 +158,11 @@ class Rp extends Command {
                                 }
                             })
 
-                            const reactioncollector = awaitmsg.createReactionCollector((reaction, user) => reaction.emoji.name == "✅" && user.id == msg.author.id || reaction.emoji.name == "❌" && user.id == msg.author.id)
+                            const reactioncollector = awaitmsg.createReactionCollector((reaction, user) => reaction.emoji.name == '✅' && user.id == msg.author.id || reaction.emoji.name == '❌' && user.id == msg.author.id)
 
                             reactioncollector.on('collect', async (reaction, user) => {
 
-                                if (reaction.emoji.name === "✅") {
+                                if (reaction.emoji.name === '✅') {
 
                                     const lemsg = await rpverif.send({
                                         embed: {
@@ -182,16 +170,16 @@ class Rp extends Command {
                                             title: `Demande d'accès au rp de ${msg.member.displayName}`,
                                             fields: [
                                                 {
-                                                    name: "Pseudo rp",
+                                                    name: 'Pseudo rp',
                                                     value: pseudo
                                                 },
                                                 {
-                                                    name: "Description",
+                                                    name: 'Description',
                                                     value: description
                                                 },
                                                 {
-                                                    name: "Status",
-                                                    value: "En attente"
+                                                    name: 'Status',
+                                                    value: 'En attente'
                                                 }
                                             ],
                                             author: {
@@ -208,24 +196,24 @@ class Rp extends Command {
                                         name: pseudo,
                                         avatar: url,
                                         description: description,
-                                        status: "waiting",
+                                        status: 'waiting',
                                         msgid: lemsg.id,
-                                        rpstatus: "alive"
+                                        rpstatus: 'alive'
                                     });
 
                                     channel.send(`${msg.author}, ta demande a été envoyée !`);
 
-                                    await lemsg.react("✅");
-                                    await lemsg.react("❌");
-                                } else if (reaction.emoji.name == "❌") {
+                                    await lemsg.react('✅');
+                                    await lemsg.react('❌');
+                                } else if (reaction.emoji.name === '❌') {
                                     channel.send(`${msg.author}, tu as annulé l'envoi de la demande d'accès au rp`);
                                 }
                                 awaitmsg.reactions.removeAll();
                                 return reactioncollector.stop();
                             })
 
-                            await awaitmsg.react("✅");
-                            await awaitmsg.react("❌");
+                            await awaitmsg.react('✅');
+                            await awaitmsg.react('❌');
 
 
                         })
@@ -253,14 +241,14 @@ class Rp extends Command {
                     const rpuser = rpdb.get(msg.author.id);
 
 
-                    if (command === "info") {
+                    if (command === 'info') {
                         const user = client.getu(args[1]) || msg.author;
 
                         const member = await msg.guild.members.fetch(user.id);
 
                         const rpu = rpdb.get(member.id);
 
-                        if (!rpu || rpu.status !== "accepted") return msg.channel.send(`Désolé ${msg.author}, mais ${member.displayName} ne fait pas partie du rp`);
+                        if (!rpu || rpu.status !== 'accepted') return msg.channel.send(`Désolé ${msg.author}, mais ${member.displayName} ne fait pas partie du rp`);
 
                         await msg.channel.send({
                             embed: {
@@ -268,15 +256,15 @@ class Rp extends Command {
                                 title: `Informations rp de ${member.displayName}`,
                                 fields: [
                                     {
-                                        name: "Pseudo rp",
+                                        name: 'Pseudo rp',
                                         value: rpu.name
                                     },
                                     {
-                                        name: "Description",
+                                        name: 'Description',
                                         value: rpu.description
                                     },
                                     {
-                                        name: "Status",
+                                        name: 'Status',
                                         value: client.getStatus(rpu.rpstatus) || 'Inconnu'
                                     }
                                 ],
@@ -290,21 +278,21 @@ class Rp extends Command {
                             }
                         });
 
-                    } else if (command === "status") {
+                    } else if (command === 'status') {
                         let [ updatetype ] = args;
 
                         const types = [
                             {
-                                id: "alive",
-                                description: "Le personnage est en vie",
-                                aliases: ["vie", "alive", "vivant"],
-                                declarate: "en vie"
+                                id: 'alive',
+                                description: 'Le personnage est en vie',
+                                aliases: ['vie', 'alive', 'vivant'],
+                                declarate: 'en vie'
                             },
                             {
-                                id: "dead",
-                                description: "Le personnage est mort",
-                                aliases: ["mort", "dead", "death"],
-                                declarate: "mort"
+                                id: 'dead',
+                                description: 'Le personnage est mort',
+                                aliases: ['mort', 'dead', 'death'],
+                                declarate: 'mort'
                             }
                         ];
 
@@ -318,7 +306,7 @@ class Rp extends Command {
                             return msg.channel.send({
                                 embed: {
                                     color: defaultcolor,
-                                    title: "Mettre à jour le status de ton personnage",
+                                    title: 'Mettre à jour le status de ton personnage',
                                     description: `Cela permet de changer le status du personnage. Voici les types disponibles :\n\n${content}\nPour ce faire, faites \`\`!rp update <nouveau status>\`\`.\nActuellement, ton personnage est ${types.find(t => t.id == rpuser.rpstatus).declarate}`
                                 }
                             });
@@ -341,40 +329,40 @@ class Rp extends Command {
                         const confirmation = await msg.channel.send(`${msg.author},`, {
                             embed: {
                                 color: defaultcolor,
-                                title: "Veux-tu changer le status de ton personnage ?",
+                                title: 'Veux-tu changer le status de ton personnage ?',
                                 description: `Tu es sur le point de déclarer ton personnage comme ${type.declarate}. Veux-tu vraiment le faire ? Confirme avec ✅. Tu as 1 minute pour le faire`
                             }
                         });
 
-                        const confirmationc = confirmation.createReactionCollector((reaction, user) => reaction.emoji.name === "✅" && user.id === msg.author.id);
+                        const confirmationc = confirmation.createReactionCollector((reaction, user) => reaction.emoji.name === '✅' && user.id === msg.author.id);
 
-                        confirmationc.on("collect", (reaction, user) => {
+                        confirmationc.on('collect', (reaction, user) => {
                             rpdb.set(msg.author.id, type.id, 'rpstatus');
                             this.changeStatus(type.id, rpuser);
                             msg.channel.send(`${msg.author}, ton personnage a été déclaré comme étant ${type.declarate}`);
                             confirmation.reactions.removeAll();
                         });
 
-                        await confirmation.react("✅");
+                        await confirmation.react('✅');
 
-                    } else if (command === "leave") {
+                    } else if (command === 'leave') {
 
                         const rmsg = await msg.channel.send({
                             embed: {
                                 color: refused,
-                                title: "Voulez-vous vraiment quitter le rp et déclarer mort votre personnage ?",
-                                description: "Ceci est irréversible. Une fois fait, vous n'aurez plus accès au rp à moins que vous refaisiez une demande. Vous n'aurez également plus accès à votre personnage, il sera déclaré mort.\nPour confirmer votre choix, réagissez avec ✅ pour confirmer ou ❌ pour annuler. Vous avez 1 minute pour le faire"
+                                title: 'Voulez-vous vraiment quitter le rp et déclarer mort votre personnage ?',
+                                description: 'Ceci est irréversible. Une fois fait, vous n\'aurez plus accès au rp à moins que vous refaisiez une demande. Vous n\'aurez également plus accès à votre personnage, il sera déclaré mort.\nPour confirmer votre choix, réagissez avec ✅ pour confirmer ou ❌ pour annuler. Vous avez 1 minute pour le faire'
                             }
                         });
 
-                        const rcollector = rmsg.createReactionCollector((reaction, user) => reaction.emoji.name == "✅" && user.id == msg.author.id || reaction.emoji.name == "❌" && user.id == msg.author.id, { time: 60000, max: 1 });
+                        const rcollector = rmsg.createReactionCollector((reaction, user) => reaction.emoji.name === '✅' && user.id === msg.author.id || reaction.emoji.name == '❌' && user.id == msg.author.id, { time: 60000, max: 1 });
 
                         rcollector.on('collect', (reaction, user) => {
                             const emote = reaction.emoji.name;
 
-                            if (emote === "✅") {
+                            if (emote === '✅') {
 
-                                this.changeStatus("left", rpuser);
+                                this.changeStatus('left', rpuser);
 
                                 rpdb.delete(msg.author.id);
 
@@ -382,7 +370,7 @@ class Rp extends Command {
 
                                 msg.channel.send(`${msg.author}, vous avez supprimé votre personnage du rp`);
 
-                            } else if (emote === "❌") {
+                            } else if (emote === '❌') {
 
                                 msg.channel.send(`${msg.author}, tu as annulé`);
 
@@ -392,7 +380,7 @@ class Rp extends Command {
 
                         rcollector.on('end', (collected, reason) => {
 
-                            if (reason == "time") {
+                            if (reason == 'time') {
                                 msg.channel.send(`${msg.author}, tu as annulé`)
                             }
 
@@ -400,21 +388,21 @@ class Rp extends Command {
 
                         })
 
-                        await rmsg.react("✅")
-                        await rmsg.react("❌")
+                        await rmsg.react('✅')
+                        await rmsg.react('❌')
 
-                    } else if (command === "update") {
+                    } else if (command === 'update') {
 
                         const types = [
                             {
-                                id: "description",
-                                description: "Permet de modifier la description de ton personnage",
-                                aliases: ["desc", "msg", "déscription"]
+                                id: 'description',
+                                description: 'Permet de modifier la description de ton personnage',
+                                aliases: ['desc', 'msg', 'déscription']
                             },
                             {
-                                id: "avatar",
-                                description: "Permet de mettre à jour l'avatar de ton personnage",
-                                aliases: ["avatar", "image", "pp", "profilepicture", "picture"]
+                                id: 'avatar',
+                                description: 'Permet de mettre à jour l\'avatar de ton personnage',
+                                aliases: ['avatar', 'image', 'pp', 'profilepicture', 'picture']
                             }
                         ]
 
@@ -431,7 +419,7 @@ class Rp extends Command {
                         if (!updateType) return msg.channel.send({
                             embed: {
                                 color: 0x3734eb,
-                                title: "Mettre à jour les informations de ton personnage",
+                                title: 'Mettre à jour les informations de ton personnage',
                                 description: usage
                             }
                         });
@@ -443,19 +431,19 @@ class Rp extends Command {
                         if (!type) return msg.channel.send({
                             embed: {
                                 color: 0x3734eb,
-                                title: "Type invalide",
+                                title: 'Type invalide',
                                 description: usage
                             }
                         });
 
-                        if (type.id.toLowerCase() === "description") {
+                        if (type.id.toLowerCase() === 'description') {
 
                             let newDescription = args[2];
 
                             if (!newDescription) return msg.channel.send(`${msg.author}, précise une description ! Elle ne devra pas dépasser 1000 caractères`)
                             if (newDescription.length >= 2000) return msg.channel.send(`Désolé ${msg.author} mais la description est trop longue. Elle doit faire moins de 2000 caractères (elle en fait ${newDescription.length})`)
 
-                        } else if (type.id.toLowerCase() === "avatar") {
+                        } else if (type.id.toLowerCase() === 'avatar') {
 
                             const attachement = msg.attachments.first();
 
@@ -464,24 +452,24 @@ class Rp extends Command {
                             const rmsg = await msg.channel.send(`${msg.author},`, {
                                 embed: {
                                     color: defaultcolor,
-                                    title: "Changement d'avatar",
-                                    description: "Voici le nouvel avatar. Réagis avec ✅ pour le changer ou ❌ pour annuler",
+                                    title: 'Changement d\'avatar',
+                                    description: 'Voici le nouvel avatar. Réagis avec ✅ pour le changer ou ❌ pour annuler',
                                     image: {
                                         url: attachement.url
                                     },
                                 }
                             })
 
-                            const rcollector = rmsg.createReactionCollector((reaction, user) => (reaction.emoji.name == "✅" || reaction.emoji.name == "❌") && user.id == msg.author.id, { time: 60000, max: 1 });
+                            const rcollector = rmsg.createReactionCollector((reaction, user) => (reaction.emoji.name == '✅' || reaction.emoji.name == '❌') && user.id == msg.author.id, { time: 60000, max: 1 });
 
                             rcollector.on('collect', async (reaction, user) => {
                                 const emote = reaction.emoji.name;
 
-                                if (emote == "✅") {
+                                if (emote == '✅') {
 
-                                    rpdb.set(msg.author.id, attachement.url, "avatar");
+                                    rpdb.set(msg.author.id, attachement.url, 'avatar');
 
-                                } else if (emote == "❌") {
+                                } else if (emote == '❌') {
 
                                     msg.channel.send(`${msg.author}, tu as annulé`);
 
@@ -491,7 +479,7 @@ class Rp extends Command {
 
                             rcollector.on('end', (collected, reason) => {
 
-                                if (reason == "time") {
+                                if (reason == 'time') {
                                     msg.channel.send(`${msg.author}, tu as annulé`);
                                 }
 
@@ -499,8 +487,8 @@ class Rp extends Command {
 
                             })
 
-                            await rmsg.react("✅")
-                            await rmsg.react("❌")
+                            await rmsg.react('✅')
+                            await rmsg.react('❌')
 
 
 
@@ -524,7 +512,7 @@ class Rp extends Command {
         let content = '';
 
         this.cmdlist.forEach(command => {
-            if (command.id === "enter") return;
+            if (command.id === 'enter') return;
             content += `\`\`!rp ${command.id}\`\` : ${command.description}\n`;
         })
 

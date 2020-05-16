@@ -13,7 +13,7 @@ class Ready extends Listener {
         const client = this.client;
         const rpdb = client.rpDB;
         const {config: {channels: {rpVerif: rpVerifId, rpFiches: rpFichesId}, roles: {accepted}}, rpDB} = client;
-        const {message, emoi: {name: emote}} = messageReaction;
+        const {message, emoji: {name: emote}} = messageReaction;
 
         if (messageReaction.partial) await messageReaction.fetch();
         if (message.partial) await message.fetch();
