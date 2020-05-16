@@ -441,7 +441,7 @@ class Rp extends Command {
                             let newDescription = args[2];
 
                             if (!newDescription) return msg.channel.send(`${msg.author}, précise une description ! Elle ne devra pas dépasser 1000 caractères`)
-                            if (newDescription.length >= 2000) return msg.channel.send(`Désolé ${msg.author} mais la description est trop longue. Elle doit faire moins de 2000 caractères (elle en fait ${newDescription.length})`)
+                            if (newDescription.length >= 1000) return msg.channel.send(`Désolé ${msg.author} mais la description est trop longue. Elle doit faire moins de 1000 caractères (elle en fait ${newDescription.length})`)
 
                         } else if (type.id.toLowerCase() === 'avatar') {
 
