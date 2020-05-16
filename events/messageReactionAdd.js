@@ -27,7 +27,7 @@ class Ready extends Listener {
             const user = rpdb.find(user => user.msgId === message.id);
             const key = rpdb.findKey(key => key === user);
 
-            if (!personne || !key) return;
+            if (!user || !key) return;
 
             const member = await msg.guild.members.fetch(key) || await client.users.fetch(key);
             const memberName = member?.displayName || member?.username || 'inconnu';
