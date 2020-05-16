@@ -1,13 +1,7 @@
-const { AkairoError } = require("discord-akairo");
-const { AkairoHandler } = require("discord-akairo");
+const { AkairoError, AkairoHandler, CommandUtil, Flag, Util, TypeResolver } = require("discord-akairo");
+const { deepAssign, flatMap, intoArray, intoCallable, isPromise, prefixCompare } = Util;
 const { BuiltInReasons, CommandHandlerEvents } = require('../node_modules/discord-akairo/src/util/Constants');
 const { Collection } = require('discord.js');
-// const { Command } = require("discord-akairo");
-const { CommandUtil } = require("discord-akairo");
-const { Flag } = require("discord-akairo");
-const { Util } = require("discord-akairo");
-const { deepAssign, flatMap, intoArray, intoCallable, isPromise, prefixCompare } = Util;
-const { TypeResolver } = require("discord-akairo");
 const Command = require("./Command");
 
 /**
