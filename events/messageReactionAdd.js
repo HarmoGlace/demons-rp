@@ -1,4 +1,4 @@
-const {Listener} = require('discord-akairo');
+const { Listener } = require('discord-akairo');
 
 class Ready extends Listener {
 
@@ -11,8 +11,10 @@ class Ready extends Listener {
 
     async exec(messageReaction, user) {
         const client = this.client;
-        const {config: {channels: {rpVerif: rpVerifId, rpFiches: rpFichesId}, roles: {accepted}}, rpDB: rpdb} = client;
-        const {message, emoji: {name: emote}} = messageReaction;
+        if (user.id === client.user.id) return;
+
+        const { config: {channels: { rpVerif: rpVerifId, rpFiches: rpFichesId }, roles: { accepted } }, rpDB } = client;
+        const { message, emoji: { name: emote } } = messageReaction;
 
         if (messageReaction.partial) await messageReaction.fetch();
         if (message.partial) await message.fetch();
@@ -23,8 +25,8 @@ class Ready extends Listener {
 
         if (message.channel.id === rpVerifId) {
 
-            const rpUser = rpdb.find(rpUser => rpUser.msgid === message.id);
-            const key = rpdb.findKey(key => key === rpUser);
+            const rpUser = rpDB.find(rpUser => rpUser.msgid === message.id);
+            const key = rpDB.findKey(key => key === rpUser);
 
             if (!rpUser || !key) return;
 
@@ -71,8 +73,8 @@ class Ready extends Listener {
                     embed: embed
                 });
 
-                rpdb.set(member.id, "accepted", "status");
-                rpdb.set(member.id, rpmsg.id, "ficheId");
+                rpDB.set(member.id, "accepted", "status");
+                rpDB.set(member.id, rpmsg.id, "ficheId");
 
                 await member.roles.add(accepted);
 
@@ -91,7 +93,7 @@ class Ready extends Listener {
                     if (raison.lenth >= 980) return message.channel.send(`Désolé ${msg.author} mais ta raison est trop longue. Elle doit faire moins de 980 caractères`)
 
 
-                    rpdb.set(key, "denied", "status")
+                    rpDB.set(key, "denied", "status")
 
                     if (member) {
                         let embedmember = {}
@@ -122,7 +124,7 @@ class Ready extends Listener {
 
                     await m.delete();
                     await message.reactions.removeAll();
-                    rpdb.set(member.id, "refused", "status");
+                    rpDB.set(member.id, "refused", "status");
                     collector.stop();
                 })
 

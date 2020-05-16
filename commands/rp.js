@@ -19,7 +19,7 @@ class Rp extends Command {
         const config = client.config
         const args = argsRaw?.all;
 
-        const { rpDB: rpdb } = client;
+        const { rpDB } = client;
         const defaultcolor = 0x3051e3;
         const sucess = 0x64eb34;
         const refused = 0xeb4034;
@@ -47,19 +47,19 @@ class Rp extends Command {
             //     id: 'enter',
             //     description: 'Permet d'entrer dans le rp'
             // }
-        ]
+        ];
 
-        this.cmdlist = commands
-        this.lemsg = msg
-        this.defaultcolor = defaultcolor
+        this.cmdlist = commands;
+        this.lemsg = msg;
+        this.defaultcolor = defaultcolor;
 
-        if (!rpdb.has(msg.author.id) || rpdb.get(msg.author.id, 'status') !== 'accepted') {
+        if (!rpDB.has(msg.author.id) || rpDB.get(msg.author.id, 'status') !== 'accepted') {
 
-            if (rpdb.has(msg.author.id) && rpdb.get(msg.author.id, 'status') === 'waiting') return msg.channel.send(`${msg.author}, attend que ta demande soit traitée !`)
+            if (rpDB.has(msg.author.id) && rpDB.get(msg.author.id, 'status') === 'waiting') return msg.channel.send(`${msg.author}, attend que ta demande soit traitée !`);
 
-            if (!args || args[0].toLowerCase() !== 'enter') return msg.channel.send(`${msg.author}, fais \`\`!rp enter\`\` pour envoyer une demande d'entrée au rp`)
+            if (!args || args[0].toLowerCase() !== 'enter') return msg.channel.send(`${msg.author}, fais \`\`!rp enter\`\` pour envoyer une demande d'entrée au rp`);
 
-            const channel = msg.channel
+            const channel = msg.channel;
 
             await msg.channel.send(`${msg.author},`, {
                 embed: {
@@ -67,20 +67,20 @@ class Rp extends Command {
                     title: 'Entre dans le rp',
                     description: 'Tout d\'abord, je t\'invite à envoyer ici le nom du personnage que tu souhaiterais avoir.\nNB : Le pseudo doit faire entre 4 et 32 caractères (inclus)'
                 }
-            })
+            });
 
-            const filter = m => m.author.id == msg.author.id;
+            const filter = m => m.author.id === msg.author.id;
             const collector = channel.createMessageCollector(filter);
 
 
             collector.on('collect', (m) => {
                 if (stops.includes(m.content.toLowerCase())) {
-                    channel.send(`${msg.author}, commande annulée.`)
-                    return collector.stop()
+                    channel.send(`${msg.author}, commande annulée.`);
+                    return collector.stop();
                 }
 
                 if (m.content.length <= 32 && m.content.length >= 4) {
-                    const pseudo = m.content
+                    const pseudo = m.content;
                     msg.channel.send(`${msg.author}, tu as choisi ${pseudo} pour le rp.`, {
                         embed: {
                             color: defaultcolor,
@@ -104,7 +104,7 @@ class Rp extends Command {
 
                         const url = attachements.first().url
 
-                        if (! await client.isImage(url)) return msg.channel.send(`${msg.author}, tu dois envoyer une image !`)
+                        if (!await client.isImage(url)) return msg.channel.send(`${msg.author}, tu dois envoyer une image !`)
 
 
                         channel.send(`${msg.author}, tu as définit ton avatar rp`, {
@@ -192,7 +192,7 @@ class Rp extends Command {
                                         }
                                     });
 
-                                    rpdb.set(msg.author.id, {
+                                    rpDB.set(msg.author.id, {
                                         name: pseudo,
                                         avatar: url,
                                         description: description,
@@ -219,7 +219,6 @@ class Rp extends Command {
                         })
 
 
-
                     })
                 } else {
                     msg.channel.send(`${msg.author}, ton pseudo doit faire entre 4 et 32 caractères !`);
@@ -238,7 +237,7 @@ class Rp extends Command {
                 if (match) {
 
 
-                    const rpuser = rpdb.get(msg.author.id);
+                    const rpuser = rpDB.get(msg.author.id);
 
 
                     if (command === 'info') {
@@ -246,7 +245,7 @@ class Rp extends Command {
 
                         const member = await msg.guild.members.fetch(user.id);
 
-                        const rpu = rpdb.get(member.id);
+                        const rpu = rpDB.get(member.id);
 
                         if (!rpu || rpu.status !== 'accepted') return msg.channel.send(`Désolé ${msg.author}, mais ${member.displayName} ne fait pas partie du rp`);
 
@@ -337,7 +336,7 @@ class Rp extends Command {
                         const confirmationc = confirmation.createReactionCollector((reaction, user) => reaction.emoji.name === '✅' && user.id === msg.author.id);
 
                         confirmationc.on('collect', (reaction, user) => {
-                            rpdb.set(msg.author.id, type.id, 'rpstatus');
+                            rpDB.set(msg.author.id, type.id, 'rpstatus');
                             this.changeStatus(type.id, rpuser);
                             msg.channel.send(`${msg.author}, ton personnage a été déclaré comme étant ${type.declarate}`);
                             confirmation.reactions.removeAll();
@@ -355,7 +354,10 @@ class Rp extends Command {
                             }
                         });
 
-                        const rcollector = rmsg.createReactionCollector((reaction, user) => reaction.emoji.name === '✅' && user.id === msg.author.id || reaction.emoji.name == '❌' && user.id == msg.author.id, { time: 60000, max: 1 });
+                        const rcollector = rmsg.createReactionCollector((reaction, user) => reaction.emoji.name === '✅' && user.id === msg.author.id || reaction.emoji.name == '❌' && user.id == msg.author.id, {
+                            time: 60000,
+                            max: 1
+                        });
 
                         rcollector.on('collect', (reaction, user) => {
                             const emote = reaction.emoji.name;
@@ -364,7 +366,7 @@ class Rp extends Command {
 
                                 this.changeStatus('left', rpuser);
 
-                                rpdb.delete(msg.author.id);
+                                rpDB.delete(msg.author.id);
 
                                 if (msg.member.roles.cache.has(config.roles.accepted)) msg.member.roles.remove(config.roles.accepted);
 
@@ -425,7 +427,6 @@ class Rp extends Command {
                         });
 
 
-
                         const type = types.find(type => type.id.toLowerCase() === updateType || type.aliases.includes(updateType));
 
                         if (!type) return msg.channel.send({
@@ -460,14 +461,17 @@ class Rp extends Command {
                                 }
                             })
 
-                            const rcollector = rmsg.createReactionCollector((reaction, user) => (reaction.emoji.name == '✅' || reaction.emoji.name == '❌') && user.id == msg.author.id, { time: 60000, max: 1 });
+                            const rcollector = rmsg.createReactionCollector((reaction, user) => (reaction.emoji.name == '✅' || reaction.emoji.name == '❌') && user.id == msg.author.id, {
+                                time: 60000,
+                                max: 1
+                            });
 
                             rcollector.on('collect', async (reaction, user) => {
                                 const emote = reaction.emoji.name;
 
                                 if (emote == '✅') {
 
-                                    rpdb.set(msg.author.id, attachement.url, 'avatar');
+                                    rpDB.set(msg.author.id, attachement.url, 'avatar');
 
                                 } else if (emote == '❌') {
 
@@ -491,8 +495,6 @@ class Rp extends Command {
                             await rmsg.react('❌')
 
 
-
-
                         }
 
 
@@ -503,7 +505,6 @@ class Rp extends Command {
             }
 
         }
-
 
 
     }
