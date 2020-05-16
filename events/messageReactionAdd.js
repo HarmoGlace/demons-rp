@@ -3,9 +3,9 @@ const {Listener} = require('discord-akairo');
 class Ready extends Listener {
 
     constructor() {
-        super('ready', {
+        super('messageReactionAdd', {
             emitter: 'client',
-            event: 'ready'
+            event: 'messageReactionAdd'
         });
     }
 
