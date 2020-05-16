@@ -46,11 +46,11 @@ class Ready extends Listener {
 
                 embed.color = 0x64eb34;
 
-                await msg.edit({
+                await message.edit({
                     embed: embed
                 });
 
-                member.send({
+                await member.send({
                     embed: {
                         color: embed.color,
                         title: "Ta demande d'accès au rp a été acceptée !",
