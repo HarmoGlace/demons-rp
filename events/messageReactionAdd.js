@@ -23,16 +23,18 @@ class Ready extends Listener {
 
         if (message.channel.id === rpVerifId) {
 
-            const user = rpdb.find(user => user.msgid === message.id);
-            const key = rpdb.findKey(key => key === user);
+            const rpUser = rpdb.find(rpUser => rpUser.msgid === message.id);
+            const key = rpdb.findKey(key => key === rpUser);
 
-            if (!user || !key) return;
+            if (!rpUser || !key) return;
 
             const member = await message.guild.members.fetch(key) || await client.users.fetch(key);
+
             const memberName = member?.displayName || member?.username || 'inconnu';
+
             const moderator = (await message.guild.members.fetch(user.id))?.displayName || (await client.users.fetch(user.id))?.username || 'inconnu';
 
-            if (personne.status !== "waiting") return;
+            if (rpUser.status !== "waiting") return;
 
             let embed = message.embeds[0];
 
@@ -72,16 +74,16 @@ class Ready extends Listener {
                 rpdb.set(member.id, "accepted", "status");
                 rpdb.set(member.id, rpmsg.id, "ficheId");
 
-                member.roles.add(accepted);
+                await member.roles.add(accepted);
 
                 await message.reactions.removeAll();
 
 
-            } else if (emote == "❌") {
+            } else if (emote === "❌") {
 
                 const confirmation = await message.channel.send(`${modo}, envoie ici la raison. Tu as 10 minutes pour le faire, sinon ton action sera annulée.`)
 
-                const collector = message.channel.createMessageCollector(msg => msg.author.id == modo.id, {time: 600000})
+                const collector = message.channel.createMessageCollector(msg => msg.author.id === modo.id, {time: 600000})
 
                 collector.on("collect", async (m) => {
                     const raison = m.content
