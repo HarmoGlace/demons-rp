@@ -1,6 +1,6 @@
 const Command = require("../struct/Command");
 
-class Rp extends CustomCommand {
+class Rp extends Command {
     constructor() {
         super('rp', { // id
             aliases: ['rp'],
