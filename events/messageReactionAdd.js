@@ -24,9 +24,7 @@ class Ready extends Listener {
 
         if (message.channel.id === rpVerifId) {
 
-            const rp = client.channels.cache.get(rpid);
-
-            const user = rpdb.find(user => user.msgId === msg.id);
+            const user = rpdb.find(user => user.msgId === message.id);
             const key = rpdb.findKey(key => key === user);
 
             if (!personne || !key) return;
@@ -68,7 +66,7 @@ class Ready extends Listener {
                 });
 
 
-                const rpmsg = await rp.send({
+                const rpmsg = await rpFiches.send({
                     embed: embed
                 });
 
