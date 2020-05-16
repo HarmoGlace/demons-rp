@@ -24,7 +24,7 @@ class Rp extends Command {
         const sucess = 0x64eb34;
         const refused = 0xeb4034;
         const stops = ['stop', 'stopper', 'cancel', 'annuler'];
-        const rpverif = client.channels.cache.get(config.rpVerif);
+        const rpverif = client.channels.cache.get(config.channels.rpVerif);
 
         const commands = [
             {
