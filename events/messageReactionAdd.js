@@ -11,8 +11,7 @@ class Ready extends Listener {
 
     async exec(messageReaction, user) {
         const client = this.client;
-        const rpdb = client.rpDB;
-        const {config: {channels: {rpVerif: rpVerifId, rpFiches: rpFichesId}, roles: {accepted}}, rpDB} = client;
+        const {config: {channels: {rpVerif: rpVerifId, rpFiches: rpFichesId}, roles: {accepted}}, rpDB: rpdb} = client;
         const {message, emoji: {name: emote}} = messageReaction;
 
         if (messageReaction.partial) await messageReaction.fetch();
@@ -35,7 +34,7 @@ class Ready extends Listener {
 
             if (personne.status !== "waiting") return;
 
-            let embed = msg.embeds[0];
+            let embed = message.embeds[0];
 
             if (emote === "✅") {
 
@@ -75,19 +74,19 @@ class Ready extends Listener {
 
                 member.roles.add(accepted);
 
-                await msg.reactions.removeAll();
+                await message.reactions.removeAll();
 
 
             } else if (emote == "❌") {
 
-                const confirmation = await msg.channel.send(`${modo}, envoie ici la raison. Tu as 10 minutes pour le faire, sinon ton action sera annulée.`)
+                const confirmation = await message.channel.send(`${modo}, envoie ici la raison. Tu as 10 minutes pour le faire, sinon ton action sera annulée.`)
 
-                const collector = msg.channel.createMessageCollector(msg => msg.author.id == modo.id, {time: 600000})
+                const collector = message.channel.createMessageCollector(msg => msg.author.id == modo.id, {time: 600000})
 
                 collector.on("collect", async (m) => {
                     const raison = m.content
 
-                    if (raison.lenth >= 980) return msg.channel.send(`Désolé ${msg.author} mais ta raison est trop longue. Elle doit faire moins de 980 caractères`)
+                    if (raison.lenth >= 980) return message.channel.send(`Désolé ${msg.author} mais ta raison est trop longue. Elle doit faire moins de 980 caractères`)
 
 
                     rpdb.set(key, "denied", "status")
@@ -96,7 +95,7 @@ class Ready extends Listener {
                         let embedmember = {}
 
 
-                        member.send({
+                        await member.send({
                             embed: {
                                 color: refused,
                                 fields: [
@@ -115,12 +114,12 @@ class Ready extends Listener {
                     });
                     embed.color = 0xeb4034;
 
-                    await msg.edit({
+                    await message.edit({
                         embed: embed
                     });
 
                     await m.delete();
-                    await msg.reactions.removeAll();
+                    await message.reactions.removeAll();
                     rpdb.set(member.id, "refused", "status");
                     collector.stop();
                 })
