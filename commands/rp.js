@@ -1,4 +1,4 @@
-const Command = require("../CustomCommand");
+const Command = require("../struct/Command");
 
 class Rp extends CustomCommand {
     constructor() {
