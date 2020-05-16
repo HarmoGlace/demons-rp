@@ -58,7 +58,7 @@ class Client extends AkairoClient {
     }
 
     async isImage (image) {
-        return image.endsWith('png') || image.endsWith('jpg');
+        return image.toLowerCase().endsWith('png') || image.endsWith('jpg');
         // let bool = false;
         //
         // try {
