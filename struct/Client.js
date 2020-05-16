@@ -1,5 +1,6 @@
 const { AkairoClient, InhibitorHandler, ListenerHandler } = require('discord-akairo');
 const Handler = require('./Handler');
+const Enmap = require('enmap');
 const config = require('../config');
 
 class Client extends AkairoClient {
@@ -12,6 +13,7 @@ class Client extends AkairoClient {
         });
 
         this.config = config;
+        this.rpDB = new Enmap({name: 'rp'})
 
         this.commandHandler = new Handler(this, {
             directory: './commands/',
@@ -47,7 +49,38 @@ class Client extends AkairoClient {
         return this.guilds.cache.get(config.serverId);
     }
 
+    replaceStatus (status) {
+        return status
+            .replace("alive", "❤️ En vie ❤️")
+            .replace("dead", "💀 Mort 💀")
+            .replace("left", "💀 Mort 💀 (a quitté le rp)")
+            .replace("unknown", "❔ Inconnu ❔")
+    }
 
+    async isImage (image) {
+        return image.endsWith('png') || image.endsWith('jpg');
+        // let bool = false;
+        //
+        // try {
+        //     const image = await Canvas.loadImage(url);
+        //     bool = true
+        // } catch (error) {
+        //     bool = false
+        // }
+        //
+        // return bool
+    }
+
+    getu = (mention) => {
+
+        const matches = mention.match(/^<@!?(\d+)>$/);
+
+        if (!matches) return;
+
+        const [,id ] = matches[1];
+
+        return client.users.cache.get(id);
+    }
 
 }
 
