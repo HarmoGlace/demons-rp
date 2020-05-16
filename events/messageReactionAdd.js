@@ -24,7 +24,7 @@ class Ready extends Listener {
 
         if (message.channel.id === rpVerifId) {
 
-            const user = rpdb.find(user => user.msgId === message.id);
+            const user = rpdb.find(user => user.msgid === message.id);
             const key = rpdb.findKey(key => key === user);
 
             if (!user || !key) return;
