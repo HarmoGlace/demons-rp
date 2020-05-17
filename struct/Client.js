@@ -51,24 +51,15 @@ class Client extends AkairoClient {
 
     replaceStatus (status) {
         return status
-            .replace("alive", "❤️ En vie ❤️")
+            .replace("alive", "❤ En vie ❤")
             .replace("dead", "💀 Mort 💀")
             .replace("left", "💀 Mort 💀 (a quitté le rp)")
             .replace("unknown", "❔ Inconnu ❔")
     }
 
-    async isImage (image) {
-        return image.toLowerCase().endsWith('png') || image.endsWith('jpg');
-        // let bool = false;
-        //
-        // try {
-        //     const image = await Canvas.loadImage(url);
-        //     bool = true
-        // } catch (error) {
-        //     bool = false
-        // }
-        //
-        // return bool
+    isImage (image) {
+        const extensions = ['png', 'jpg'];
+        return !!extensions.find(extension => image.toLowerCase().endsWith(extension));
     }
 
     getu = (mention) => {
